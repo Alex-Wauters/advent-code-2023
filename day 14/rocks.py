@@ -1,5 +1,3 @@
-from collections import deque
-
 def coord(x, y) -> str:
     return f"{x},{y}"
 
@@ -65,7 +63,7 @@ with open("input.txt", "r") as file:
         part1 += (MAX_Y - y) * (sum([1 if map.get(coord(x, y), '') == 'O' else 0 for x in range(0, MAX_X)]))
     print("Part 1:", part1)
     map = readMap(lines)
-    previous = deque(maxlen=1000)
+    previous = []
     cycle_start, cycle_size = 0, 0
     for i in range(0, 1000000000):
         tilt_all_dirs(map)
@@ -75,8 +73,7 @@ with open("input.txt", "r") as file:
             cycle_size = i - cycle_start
             break
         previous.append(cycle)
-    map = readMap(lines)
-    for i in range(0, ((1000000000 - cycle_start) % cycle_size) + cycle_start):
+    for i in range(0, ((1000000000 - cycle_start) % cycle_size) - 1):
         tilt_all_dirs(map)
     for y in range(0, MAX_Y):
         part2 += (MAX_Y - y) * (sum([1 if map.get(coord(x, y), '') == 'O' else 0 for x in range(0, len(lines[0]))]))
